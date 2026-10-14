@@ -45,3 +45,27 @@ cards. The installed working receiver was left unchanged while preparing it.
 
 No captures, certificates, contact identifiers, private network addresses,
 device hostnames, received files or account paths are included.
+
+## Fresh installed-branch check, 2026-10-14
+
+Commit `42b2ac5` was built through `makepkg` and installed as
+`omdrop-owl 0.1.1-1`, replacing the original local package. The override was
+changed from `p2p` to `go`; existing receiver settings were preserved.
+
+- The normal receiver completed Mac-to-Linux Discover, Ask and Upload with
+  HTTP 200, storing a 463,586-byte HEIC file. Filesystem size was verified and
+  the user confirmed completion on the Mac.
+- Contacts Only remained enabled; the receiver accepted a known contact.
+- Visibility was delayed by over a minute after startup. This test does not
+  establish immediate discovery or isolate the reason for that delay.
+- Normal `omdrop off` removed the temporary radio interfaces and returned the
+  Wi-Fi station to NetworkManager.
+- A new 15-second radio-only window expired with reason `expired`, removing
+  the GO group, mon0/mon1, control directory and recorded state. No owned
+  supplicant remained; the station was managed/disconnected and Ethernet
+  stayed connected. The receive service remained stopped for this check.
+- `pacman -Qkk` reported zero altered package files, and the installed helper
+  byte-matched the tested commit.
+
+Linux-to-Mac sending and iPhone receiving have not been re-tested on this
+rebased installed branch; their earlier observations above remain separate.
